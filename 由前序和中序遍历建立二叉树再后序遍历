@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+typedef struct node
+{
+	char data;
+	node* rchild;
+	node* lchild;
+}Tree;
+Tree* creattree(int Xb,int Xe,int Zb,int Ze,char xianxu[],char zhongxu[])
+{
+	if(Xb>Xe)
+	return NULL;
+	else
+	{
+		Tree* T;
+		T=(Tree*)malloc(sizeof(Tree));
+		T->data=xianxu[Xb];
+		int k=0;
+		for(int i=Zb;i<=Ze;i++)
+		{
+			if(xianxu[Xb]==zhongxu[i])
+			{
+				k=i;
+				break;
+			}
+			else 
+			continue;
+		}
+		T->lchild=creattree(Xb+1,Xb+k-Zb,Zb,k-1,xianxu,zhongxu);
+		T->rchild=creattree(Xb+k-Zb+1,Xe,k+1,Ze,xianxu,zhongxu);
+		return T;
+	}
+}
+void houxu(Tree* T)
+{
+	if(T==NULL)
+	return;
+	printf("%c",T->data);
+	houxu(T->lchild);
+	houxu(T->rchild); 
+}
+int main()
+{
+	char xianxu[10];
+	char zhongxu[10];
+	int Xb,Xe,Zb,Ze;
+	Xe=strlen(xianxu)-1;
+	Ze=strlen(zhongxu)-1;
+	Xb=0;
+	Zb=0;
+	scanf("%s",xianxu);
+	scanf("%s",zhongxu);
+	Tree* Node;
+	Node=creattree(Xb,Xe,Zb,Ze,xianxu,zhongxu);
+	houxu(Node);
+	return 0;
+	
+}
