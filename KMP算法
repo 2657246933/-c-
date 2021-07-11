@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<string.h>
+void creatnext(char string2[],int next[])
+{
+	int i;
+	next[0]=0;
+	next[1]=1;
+	for(i=2;i<=strlen(string2)-1;i++)
+	{
+		int j=1,n=0;
+		while(j<i&&n<i)
+		{
+			if(string2[j]==string2[n])
+			j++,n++;
+			else
+			{
+				j++;
+				n=0;
+			}
+		}
+		next[i]=n-1;
+	}
+}
+int main()
+{
+	int next[100];
+	char string1[100];
+	char string2[100];
+	scanf("%s",string1);
+	scanf("%s",string2);
+	creatnext(string2,next);
+	int x=0,y=0; //x为string1的下标，y为string2的下标。 
+	while(y<=strlen(string2)-1&&x<=strlen(string1)-1)
+	{
+		if(string2[y]==string1[x])
+		x++,y++;
+		else
+		{
+			if(y==0)
+			x++;
+			else
+			{
+				y=next[y-1];
+				x++;
+				y++;
+			}
+
+			
+		}
+	}
+	if(y==strlen(string2))
+	printf("yes");
+	else
+	printf("no");
+} 
