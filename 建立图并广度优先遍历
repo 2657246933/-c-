@@ -1,0 +1,87 @@
+#include<stdio.h>
+typedef struct queue
+{
+	int data[100];
+	int front,rear;
+};
+typedef struct mgraph
+{
+	int vesxs[100];
+	int arc[100][100];
+	int numvesxs,numedge;
+};
+void pull(queue* Q,int e)
+{
+		Q->data[Q->rear]=e;
+		Q->rear++;
+}
+void put(queue* Q,int *e)
+{
+	if(Q->front==Q->rear)
+	return ;
+	else
+	{
+		*e=Q->data[Q->front];
+		Q->front++;
+	}
+}
+void creatmgraph(mgraph* G)
+{
+	int i,j,k,w;
+	scanf("%d %d",&G->numvesxs,&G->numedge);
+	for(k=0;k<=G->numvesxs-1;k++)
+	{
+		G->vesxs[k]=k;
+	}
+	for(i=0;i<=G->numvesxs-1;i++)
+	{
+		for(j=0;j<=G->numvesxs-1;j++)
+		G->arc[i][j]=0;
+	}
+	for(w=0;w<=2*G->numedge-2;w=w+2)
+	{
+			scanf("%d %d",&i,&j);
+			G->arc[i][j]=1;
+			G->arc[j][i]=1;
+	}
+}
+void BFS(mgraph* G)
+{
+	queue Q;
+	Q.front=Q.rear=0;
+	int i,j,h;
+	char visited[100];
+	for(i=0;i<=G->numvesxs-1;i++)
+	{
+		visited[i]='F';
+	}
+	for(j=0;j<=G->numvesxs-1;j++)
+	{
+		if(visited[j]=='F')
+		{
+			printf("%d",G->vesxs[j]);
+			visited[j]='T';
+			pull(&Q,j);
+			while(Q.front!=Q.rear)
+		    {
+			     put(&Q,&h);
+			     for(i=0;i<=G->numvesxs-1;i++)
+			     {
+				     if(visited[i]=='F'&&G->arc[h][i]==1)
+				     {
+					      visited[i]='T';
+					      printf("%d",G->vesxs[i]);
+					      pull(&Q,i);
+				     }
+			     }
+		    }
+		}
+	}
+}
+int main()
+{
+	mgraph G;
+	creatmgraph(&G);
+	BFS(&G);
+	return 0;
+}
