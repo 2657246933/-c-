@@ -1,0 +1,105 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct linklist
+{
+	char data;
+	linklist* next;
+};
+int main()
+{
+	int flag=0;
+	linklist* p;
+	linklist* head1;
+	head1=p=(linklist*)malloc(sizeof(linklist));
+	p->next=NULL;
+	do
+	{
+		p->next=(linklist*)malloc(sizeof(linklist));
+		p=p->next;
+		scanf("%c",&(p->data));
+		p->next=NULL;
+		if(p->data=='\n')
+		break;
+	}while(1);
+	linklist* q;
+	linklist* head2;
+	head2=q=(linklist*)malloc(sizeof(linklist));
+	q->next=NULL;
+	do
+	{
+		q->next=(linklist*)malloc(sizeof(linklist));
+		q=q->next;
+		scanf("%c",&(q->data));
+		q->next=NULL;
+		if(q->data=='\n')
+		break;
+	}while(1);
+	p=head1->next;
+	q=head2->next;
+	linklist* T;
+	linklist* headT;
+	headT=T=(linklist*)malloc(sizeof(linklist));
+	T->next=NULL;
+	while(p->data!='\n'||q->data!='\n')
+	{
+		if(p->data!='\n'&&q->data!='\n')
+		{
+			T->next=(linklist*)malloc(sizeof(linklist));
+			T=T->next;
+			T->data=p->data-48+q->data+flag;
+			if(T->data>=58)
+			{
+				T->data=p->data-48+q->data-48-10+48+flag;
+				flag=1;
+			}
+			else
+			flag=0;
+            T->next=NULL;
+			p=p->next;
+			q=q->next;
+		}
+		if(p->data=='\n'&&q->data!='\n')
+		{
+			T->next=(linklist*)malloc(sizeof(linklist));
+			T=T->next;
+			T->data=q->data+flag;
+			if(T->data>=58)
+			{
+				T->data=q->data+flag-10;
+				flag=1;
+			}
+			else
+			flag=0;
+			T->next=NULL;
+			q=q->next;
+		}
+		if(q->data=='\n'&&p->data!='\n')
+		{
+			T->next=(linklist*)malloc(sizeof(linklist));
+			T=T->next;
+			T->data=p->data+flag;
+			if(T->data>=58)
+			{
+				T->data=p->data+flag-10;
+				flag=1;
+			}
+			else
+			flag=0;
+			T->next=NULL;
+			p=p->next; 
+		}
+	}
+	if(flag==1)
+	{
+		T->next=(linklist*)malloc(sizeof(linklist));
+		T=T->next;
+		T->next=NULL;
+		T->data='1';
+	}
+	T=headT->next;
+	while(T!=NULL)
+	{
+		printf("%c",T->data);
+		T=T->next;
+	}
+}
