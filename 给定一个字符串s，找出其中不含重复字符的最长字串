@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<string.h>
+typedef struct queue
+{
+	char string[100];
+	int front;
+	int rear;
+} ;
+void put(queue* Q,int number)
+{
+	Q->front=Q->front+number;
+	if(Q->front==Q->rear)
+	return ;
+}
+void pull(queue* Q,char e)
+{
+	Q->string[Q->rear]=e;
+	Q->rear++;
+}
+void initialization(queue* Q)
+{
+	Q->front=Q->rear=0;
+}
+int main()
+{
+	int length=0;
+	int k;
+	queue Q;
+	initialization(&Q);
+	char s[100];
+	scanf("%s",s);
+	int i=0;
+	for(i=0;i<=strlen(s)-1;i++)
+	{
+		if(Q.front==Q.rear)
+		{
+			pull(&Q,s[i]);
+			continue;
+		}
+		for(k=Q.front;k<=Q.rear-1;k++)
+		{
+			if(s[i]!=Q.string[k])
+			{
+				continue;
+			}
+			else
+			{
+				if(Q.rear-Q.front>=length)
+				length=Q.rear-Q.front;
+				put(&Q,k-Q.front+1);
+				pull(&Q,s[i]);
+				break;
+			}
+		}
+		if(k==Q.rear)
+		pull(&Q,s[i]);
+	}
+	if(Q.rear-Q.front>=length)
+	length=Q.rear-Q.front;
+	printf("%d",length);
+	return 0;
+}
