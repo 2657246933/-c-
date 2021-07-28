@@ -1,0 +1,101 @@
+#include<stdio.h>
+#include<string.h>
+typedef struct queue
+{
+	char string[100];
+	int front;
+	int rear;
+};
+typedef struct stack
+{
+	char string[100];
+	char* top;
+	char* base;
+};
+void initializationqueue(queue* Q)
+{
+	Q->front=Q->rear=0;
+}
+void initializationstack(stack* S)
+{
+	S->top=S->base=S->string;
+}
+void pullqueue(queue* Q,char e)
+{
+	Q->string[Q->rear]=e;
+	Q->rear++;
+}
+void putqueue(queue* Q)
+{
+	if(Q->front==Q->rear)
+	return ;
+	Q->front++;
+}
+void pullstack(stack* S,char e)
+{
+	*(S->top)=e;
+	S->top++;
+}
+void putstack(stack* S)
+{
+	if(S->top==S->base)
+	return ;
+	S->top--;
+}
+int judge(queue* Q,stack* S)
+{
+	int q=Q->front;
+	char* s=S->top;
+	int j=0;
+	while(Q->front!=Q->rear&&S->top!=S->base)
+	{
+		if(Q->string[Q->front]==*(S->top-1))
+		{
+			j++;
+			putstack(S);
+			putqueue(Q);
+			continue;
+		}
+		else
+		{
+			j=0;
+			break;
+		}
+	}
+	Q->front=q;
+	S->top=s;
+	return j;
+}
+int main()
+{
+	int result=0;
+	int x,y;
+	stack S;
+	queue Q;
+	initializationqueue(&Q);
+	initializationstack(&S);
+	char string[100];
+	scanf("%s",string);
+	for(int i=0;i<=strlen(string)-1;i++)
+	{
+		for(int j=i;j<=strlen(string)-1;j++)
+		{
+			pullstack(&S,string[j]);
+			pullqueue(&Q,string[j]);
+			if(result<=judge(&Q,&S))
+			{
+				result=judge(&Q,&S);
+				x=i;
+				y=j;
+			}
+		}
+		Q.rear=Q.front=0;
+		S.top=S.base=S.string; 
+	}
+	while(x<=y)
+	{
+		printf("%c",string[x]);
+		x++;
+	}
+	return 0;
+}
