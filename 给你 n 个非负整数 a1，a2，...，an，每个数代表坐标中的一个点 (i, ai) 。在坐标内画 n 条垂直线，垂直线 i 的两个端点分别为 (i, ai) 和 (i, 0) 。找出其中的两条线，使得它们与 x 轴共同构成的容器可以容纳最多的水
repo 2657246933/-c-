@@ -1,0 +1,41 @@
+#include<stdio.h>
+int main()
+{
+	int string[100];
+	int i=1;
+	char a;
+	do
+	{
+		scanf("%d",&string[i]);
+		i++;
+		scanf("%c",&a);
+	}while(a!='\n');
+	int array[100][100];
+	for(int x=1;x<=i-1;x++)
+	{
+		for(int y=x;y<=i-1;y++)
+		{
+			if(string[x]>=string[y])
+			{
+				array[x][y]=string[y]*(y-x);
+			}
+			else
+			{
+				array[x][y]=string[x]*(y-x);
+			}
+		}
+	}
+	int result=0;
+	for(int x=1;x<=i-1;x++)
+	{
+		for(int y=x;y<=i-1;y++)
+		{
+			if(result<=array[x][y])
+			{
+				result=array[x][y];
+			}
+		}
+	}
+	printf("%d",result);
+	return 0;
+}
