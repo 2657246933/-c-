@@ -1,0 +1,144 @@
+#include<stdio.h>
+void oneTOfour(int e)
+{
+	if(e==4)
+	{
+		printf("IV");
+	}
+	else
+	{
+		for(int i=1;i<=e;i++)
+		{
+			printf("I");
+		}
+	}
+}
+void fiveTOnine(int e)
+{
+	if(e==9)
+	{
+		printf("IX");
+	}
+	else
+	printf("V");
+}
+void tenTOfiftynine(int e)
+{
+	if(e>=40&&e<=49)
+	{
+		printf("XL");
+	}
+	else
+	{
+		for(int i=1;i<=e/10;i++)
+		{
+			printf("X");
+		}
+	}
+}
+void fiftyTOnintynine(int e)
+{
+	if(e>=90&&e<=99)
+	{
+		printf("XC");
+	}
+	else
+	{
+		printf("L");
+	}
+}
+void onehundredTOfourhundrednintynine(int e)
+{
+	if(e>=400&&e<=499)
+	{
+		printf("CD");
+	}
+	else
+	{
+		for(int i=1;i<=e/100;i++)
+		{
+			printf("C");
+		}
+	}
+}
+void fivehundredTOninehundrednintynine(int e)
+{
+	if(e>=900&&e<=999)
+	{
+		printf("CM");
+	}
+	else
+	{
+		printf("D");
+	}
+}
+void onethoundsoudTOendless(int e)
+{
+	for(int i=1;i<=e/1000;i++)
+	{
+		printf("M");
+	}
+}
+int main()
+{
+	int num;
+	scanf("%d",&num);
+	if(num/1000!=0)
+	{
+		onethoundsoudTOendless(num);
+		num=num%1000;
+		if(num==0)
+		return 0;
+	}
+	if(num/500!=0)
+	{
+		fivehundredTOninehundrednintynine(num);
+		if(num>=900)
+		num=num-900;
+		else
+		num=num%500;
+		if(num==0)
+		return 0;
+	}
+	if(num/100!=0)
+	{
+		onehundredTOfourhundrednintynine(num);
+		if(num>=400)
+		num=num-400;
+		else
+		num=num%100;
+		if(num==0)
+		return 0;
+	}
+	if(num/50!=0)
+	{
+		fiftyTOnintynine(num);
+		if(num>=90)
+		num=num-90;
+		else
+		num=num%50;
+		if(num==0)
+		return 0;
+	}
+	if(num/10!=0)
+	{
+		tenTOfiftynine(num);
+		if(num>=40)
+		num=num-40;
+		else
+		num=num%10;
+		if(num==0)
+		return 0;
+	}
+	if(num/5!=0)
+	{
+		fiveTOnine(num);
+		num=num%5;
+		if(num==0||num+5==9)
+		return 0;
+	}
+	if(num/1!=0)
+	{
+		oneTOfour(num);
+	}
+}
