@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+typedef struct stack
+{
+	int string[100];
+	int* top;
+	int* base;
+};
+void initialization(stack* S)
+{
+	S->top=S->base=S->string;
+}
+void put(stack* S)
+{
+	S->top--; 
+}
+void pull(stack* S,int e)
+{
+	*(S->top)=e;
+	S->top++;
+}
+void judge(stack* S,stack* storage,int target,int* result)
+{
+	if(abs(*(S->top-1)+*(S->top-2)+*(S->top-3)-target)<=*result)
+	{
+		*result=*(S->top-1)+*(S->top-2)+*(S->top-3)-target;
+		storage->top=storage->base;
+		pull(storage,*(S->top-3));
+		pull(storage,*(S->top-2));
+		pull(storage,*(S->top-1));
+	}
+}
+int main()
+{
+	int result=100;
+	int nums[100];
+	int target;
+	int i=0;
+	char a;
+	scanf("%d",&target);
+	do
+	{
+		scanf("%d",&nums[i]);
+		i++;
+		scanf("%c",&a);
+	}while(a!='\n');
+	stack S;
+	stack storage;
+	initialization(&S);
+	initialization(&storage);
+	for(int x=0;x<=i-3;x++)
+	{
+		pull(&S,nums[x]);
+		for(int y=x+1;y<=i-2;y++)
+		{
+			pull(&S,nums[y]);
+			for(int j=y+1;j<=i-1;j++)
+			{
+				pull(&S,nums[j]);
+				judge(&S,&storage,target,&result);
+				put(&S);
+			}
+			put(&S);
+		}
+		put(&S);
+	}
+	if(i>=3)
+	{
+		for(int h=0;h<=2;h++)
+		{
+			storage.top--;
+			printf("%d",*storage.top);
+		}
+	}
+	else
+	{
+		printf(" ");
+	}
+	return 0;
+}
