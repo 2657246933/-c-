@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+typedef struct stack
+{
+	char string[100];
+	char* top;
+	char* base;
+};
+void put(stack* S)
+{
+	S->top--; 
+}
+void pull(stack* S,char e)
+{
+	*(S->top)=e;
+	S->top++;
+}
+void printfstack(stack* S)
+{
+	char* p=S->top;
+	while(p!=S->base)
+	{
+		p--;
+		printf("%c",*p);
+	}
+}
+typedef struct Tree
+{
+	char data;
+	Tree* lchild;
+	Tree* mchild;
+	Tree* rchild;
+};
+Tree* creatTree(Tree* T,char digits[100],char array[10][3],int e,int* flag)
+{
+	if((*flag)<=strlen(digits)-1)
+	{
+		T=(Tree*)malloc(sizeof(Tree));
+		T->lchild=NULL;
+		T->mchild=NULL;
+		T->rchild=NULL;
+		int target=digits[*flag]-48;
+	    T->data=array[target][e];
+  	    *flag=*flag+1;
+	    T->lchild=creatTree(T->lchild,digits,array,0,flag);
+	    T->mchild=creatTree(T->mchild,digits,array,1,flag);
+	    T->rchild=creatTree(T->rchild,digits,array,2,flag);
+	    (*flag)=*flag-1;
+	    return T;
+	}
+	else
+	return NULL;
+}
+void TravelTree(Tree* T,stack* S,char digits[])
+{
+	if(T!=NULL)
+	{
+		pull(S,T->data);
+	    TravelTree(T->lchild,S,digits);
+	    TravelTree(T->mchild,S,digits);
+	    TravelTree(T->rchild,S,digits);
+	    if(S->top-S->base==strlen(digits))
+	    printfstack(S);
+	    put(S);
+	}
+}
+int main()
+{
+	char array[10][3];
+	int k=0;
+	for(int i=2;i<=9;i++)
+	{
+		for(int j=0;j<=2;j++)
+		{
+			array[i][j]=97+k;
+			k++;
+		}
+	}
+	char digits[100];
+	scanf("%s",digits);
+	Tree T; 
+	int flag=0;
+	T.lchild=creatTree(T.lchild,digits,array,0,&flag);
+	flag=0;
+	T.mchild=creatTree(T.mchild,digits,array,1,&flag);
+	flag=0;
+	T.rchild=creatTree(T.rchild,digits,array,2,&flag);
+	stack S;
+	S.top=S.base=S.string;
+	TravelTree(T.lchild,&S,digits);
+	S.top=S.base;
+	TravelTree(T.mchild,&S,digits);
+	S.top=S.base;
+	TravelTree(T.rchild,&S,digits);
+	S.top=S.base;
+	return 0;
+}
