@@ -1,0 +1,88 @@
+#include<stdio.h>
+typedef struct stack
+{
+	char string[100];
+	char* top;
+	char* base;
+};
+void inputleft(char string[],int e,int i,stack* S,int* flag);
+void put(stack* S)
+{
+	if(S->top==S->base)
+	{
+		return ;
+	}
+	else
+	{
+		S->top--;
+	}
+}
+void pull(stack* S,char e)
+{
+	*(S->top)=e;
+	S->top++;
+}
+void judgement(char string[],stack* S,int i,int* flag)//i为数组长度 
+{
+	for(int k=0;k<=i-1;k++)
+	{
+		pull(S,string[k]);
+		if(S->top-S->base>=2)
+		{
+			if(*(S->top-1)==')'&&*(S->top-2)=='(')
+		    {
+			    put(S);
+			    put(S);
+		    }
+		}
+	}
+	if(S->top==S->base)
+	{
+		*flag=1;
+		for(int j=0;j<=i-1;j++)
+		{
+			printf("%c",string[j]);
+		}
+	}
+	S->top=S->base;
+}
+void inputright(char string[],int e,int i,stack* S,int* flag)//i为数组长度，e为此时的在数组中的位置  
+{
+	if(e<=i-1)
+	{
+		string[e]=')';
+	    inputleft(string,e+1,i,S,flag);
+	    if(*flag!=1)
+		inputright(string,e+1,i,S,flag);
+	}
+	*flag=0;
+	if(e-1==i-1)
+	{
+		judgement(string,S,i,flag);
+	}
+}
+void inputleft(char string[],int e,int i,stack* S,int* flag)//i为数组长度，e为此时的在数组中的位置 
+{
+	if(e<=i-1)
+	{
+		string[e]='(';
+		inputleft(string,e+1,i,S,flag);
+		if(*flag!=1)
+		inputright(string,e+1,i,S,flag);
+	}
+	*flag=0;
+	if(e-1==i-1)
+	{
+		judgement(string,S,i,flag);
+	}
+}
+int main()
+{
+	int num,flag=0;
+	scanf("%d",&num);
+	stack S;
+	S.top=S.base=S.string;
+	char string[100];
+	inputleft(string,0,2*num,&S,&flag);
+	return 0;
+} 
