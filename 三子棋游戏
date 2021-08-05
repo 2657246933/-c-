@@ -1,0 +1,172 @@
+#include<stdio.h>
+#include<stdlib.h>
+void printbegin(int* choose)//choose为一开始的选择 
+{
+	printf("请选择；");
+	scanf("%d",choose);
+	while(*choose!=0&&*choose!=1)
+	{
+		switch(*choose)
+		{
+			case 0:
+			printf("退出游戏\n");
+			break;
+			case 1:
+			printf("三子棋开始\n");
+			break;
+			default:
+			printf("输入错误，请重新选择\n");
+			break;
+			
+		}
+	}
+	
+} 
+void printboard(char string[3][3],int row,int col)//row为行，col为列 ，打印棋盘 
+{
+	for(int i=0;i<=row-1;i++)
+	{
+		for(int j=0;j<=col-1;j++)
+		{
+			printf(" %c ",string[i][j]);
+			if(j!=col-1)
+			{
+				printf("|");
+			}
+			else
+			{
+				printf("\n");
+			}
+		}
+		if(i!=row-1)
+		{
+			for(int k=0;k<=col-1;k++)
+		    {
+			    printf("--- ");
+		    }
+	    	printf("\n");
+		}
+	}
+} 
+void playermove(char string[3][3],int row,int col)
+{
+	printf("玩家输入："); 
+	int x,y;
+	while(1)
+	{
+		scanf("%d %d",&x,&y);
+		if(x<=row&&y<=col)
+		{
+			string[x-1][y-1]='*';
+			printboard(string,row,col);
+			break;
+		}
+		else
+		{
+			printf("输入错误，请重新输入: ");
+		} 
+	}
+	
+}
+void computermove(char string[3][3],int row,int col)
+{
+	printf("电脑输入：\n");
+	int x,y;
+	int num=0;
+	while(1)
+	{
+		x=rand()%(row-1);
+	    y=rand()%(col-1);
+	    if(string[x][y]==' ')
+	    {
+    		string[x][y]='#';
+    		break;
+    	}
+	    num++;
+	    if(num==9)
+	    break;
+	}
+	printboard(string,row,col);
+}
+int gameover(char string[3][3],int row,int col)
+{
+	int flag=0;//继续 
+	for(int x=0;x<=row-1;x++)
+	{
+		if(string[x][0]==string[x][1]&&string[x][1]==string[x][2]&&string[x][0]!=' ')
+		flag=1;//赢 
+	}
+	for(int y=0;y<=col-1;y++)
+	{
+		if(string[0][y]==string[1][y]&&string[1][y]==string[2][y]&&string[0][y]!=' ')
+		flag=1;
+	}
+	if(string[0][0]==string[1][1]&&string[1][1]==string[2][2]&&string[0][0]!=' ')
+	flag=1;
+	if(string[0][2]==string[1][1]&&string[1][1]==string[2][0]&&string[0][2]!=' ')
+	flag=1;
+	int k,m;
+	for(k=0;k<=row-1;k++)
+	{
+		for(m=0;m<=col-1;m++)
+		{
+			if(string[k][m]==' ')
+			break;
+		}
+		if(m<=col-1)
+		break;
+	}
+	if(k==row)
+	flag=3;//平局 
+	return flag;
+}
+void gamebegin(char string[3][3],int row,int col)
+{
+	while(1)
+	{
+		playermove(string,row,col);
+		if(gameover(string,row,col)==0)
+		{
+			computermove(string,row,col);
+			if(gameover(string,row,col)==0)
+			continue;
+			if(gameover(string,row,col)==1)
+			{
+				printf("电脑赢");
+				 break;
+			}
+			if(gameover(string,row,col)==3)
+			{
+				printf("平局");
+				 break;
+			} 
+		}
+		if(gameover(string,row,col)==1)
+	    {
+		    printf("棋手赢");
+	        break;
+		}
+		if(gameover(string,row,col)==3)
+		{
+		    printf("平局");
+	        break;
+		} 
+	}
+}
+int main()
+{
+	char string[3][3];
+	for(int i=0;i<=2;i++)
+	{
+		for(int y=0;y<=2;y++)
+		{
+			string[i][y]=' ';
+		}
+	}
+	int row=3;
+	int col=3;
+	int choose;
+	printbegin(&choose);
+	printboard(string,row,col);
+	gamebegin(string,row,col);
+}
