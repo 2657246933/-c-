@@ -1,0 +1,74 @@
+#include<stdio.h>
+void dichotomizingsearchleft(int string[],int low,int high,int flag,int* temp1)
+{
+	int mid=(low+high)/2;
+	if(low>high)
+	{
+		return ;
+	}
+	else
+	{
+		if(string[mid]==flag)
+		{
+			*temp1=mid;
+			dichotomizingsearchleft(string,low,mid-1,flag,temp1);
+		}
+		else
+		{
+			if(string[mid]<flag)
+			{
+				dichotomizingsearchleft(string,mid+1,high,flag,temp1);
+			}
+			if(string[mid]>flag)
+			{
+				dichotomizingsearchleft(string,low,mid-1,flag,temp1);
+			}
+		}
+	}
+} 
+void dichotomizingsearchright(int string[],int low,int high,int flag,int* temp2)
+{
+    int mid=(low+high)/2;
+	if(low>high)
+	{
+		return ;
+	}
+	else
+	{
+		if(string[mid]==flag)
+		{
+			*temp2=mid;
+			dichotomizingsearchright(string,mid+1,high,flag,temp2);
+		}
+		else
+		{
+			if(string[mid]<flag)
+			{
+				dichotomizingsearchright(string,mid+1,high,flag,temp2);
+			}
+			if(string[mid]>flag)
+			{
+				dichotomizingsearchright(string,low,mid-1,flag,temp2);
+			}
+		}
+	}
+}
+int main()
+{
+	int string[100];
+	int i=0; 
+	int flag;
+	char a;
+	do
+	{
+		scanf("%d",&string[i]);
+		i++;
+		scanf("%c",&a);
+	}while(a!='\n');
+	scanf("%d",&flag);
+	int temp1=-1;
+	int temp2=-1;
+	dichotomizingsearchleft(string,0,i-1,flag,&temp1);
+	dichotomizingsearchright(string,0,i-1,flag,&temp2);
+	printf("%d %d",temp1,temp2);
+}
