@@ -1,0 +1,94 @@
+#include<stdio.h>
+typedef struct stack
+{
+	int string[100];
+	int* top;
+	int* base;
+};
+//初始化栈 
+void creatstack(stack* S)
+{
+	S->top=S->base=S->string;
+}
+//进栈 ，i为进栈的数组坐标 
+void input(stack* S,int string[],int i)
+{
+	*S->top=string[i];
+	S->top++;
+}
+//出栈
+void output(stack* S)
+{
+	if(S->top==S->base)
+	return ;
+	S->top--;
+} 
+//判断栈的元素是否和为target,0为和小于target，1为和等于target，2为和大于target 
+int judge(stack* S,int target)
+{
+	int* p;
+	p=S->base;
+	int e=0;
+	while(p!=S->top)
+	{
+		e=e+*p;
+		p++;
+	}
+	if(e==target)
+	return 1;
+	if(e<target) 
+	return 0;
+	if(e>target)
+	return 2;
+} 
+//打印和为target的集合
+void printstack(stack* S)
+{
+	int* p;
+	p=S->base;
+	 while(p!=S->top)
+	{
+		printf("%d",*p);
+		p++;
+	}
+} 
+//开始 i为进入栈的数组下标，over为数组最后一个 元素下标 
+void begin(stack* S,int string[],int i,int over,int target) 
+{
+	for(int j=i;j<=over;j++)
+	{
+		input(S,string,j);
+		if(judge(S,target)==0)
+		{
+			begin(S,string,j,over,target);
+		}
+		if(judge(S,target)==1)
+		{
+			printstack(S);
+			printf("\n");
+			output(S);
+		}
+		if(judge(S,target)==2)
+		{
+			output(S);
+		}
+	}
+	output(S);
+}
+int main()
+{
+	int string[100];
+	char a;
+	int i=0;
+	do
+	{
+		scanf("%d",&string[i]);
+		i++;
+		scanf("%c",&a);
+	}while(a!='\n');
+	int target;
+	scanf("%d",&target);
+	stack S;
+	creatstack(&S);
+	begin(&S,string,0,i-1,target);
+}
