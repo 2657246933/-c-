@@ -1,0 +1,34 @@
+#include<stdio.h>
+//over为数组的最后值的下标，flag为当前的数组值的下标 ,当sympol为1代表true，为0代表false 
+void travertree(int string[],int over,int flag,int* sympol)
+{
+	if(string[flag]==0&&flag!=over)
+	return ;
+	if(flag==over) 
+	{
+		*sympol=1;
+		return ;
+	}
+	for(int i=1;i<=string[flag]&&flag+i<=over;i++)
+	{
+		travertree(string,over,flag+i,sympol);
+	}
+}
+int main()
+{
+	int string[100];
+	int i=0;
+	int sympol=0,flag=0;
+	char a;
+	do
+	{
+		scanf("%d",&string[i]);
+		i++;
+		scanf("%c",&a);
+	}while(a!='\n');
+	travertree(string,i-1,flag,&sympol);
+	if(sympol==1)
+	printf("true");
+	else
+	printf("false");
+}
