@@ -1,0 +1,157 @@
+#include<stdio.h>
+void judgeno(char string[],int begin1,int begin2,int over1,int over2);
+void judgeyes(char string[],int begin1,int begin2,int over1,int over2);
+void display(char string[],int begin,int over);
+void judge(char string[],int begin1,int begin2,int over1,int over2);
+void beginmove(char string[],int begin1,int begin2,int over1,int over2)
+{
+	printf("\n");
+	int num=over1+1;
+	while(string[num]==' ')
+	{
+		num++;
+	}
+	if(string[num]=='\n')
+	return ;
+	int x,y;
+	x=over1+1;
+	while(string[x]==' ')
+	{
+		x++;
+	}
+	y=x;
+	while(string[y]!=' '&&string[y]!='\n')
+	{
+		y++;
+	}
+	
+	if(string[y]=='\n')
+	{
+		display(string,x,y-1);
+		return ;
+	}
+	int i,j;
+	i=y;
+	while(string[i]==' ')
+	{
+		i++;
+	}
+	j=i;
+	while(string[j]!=' ')
+	{
+		j++;
+	}
+	display(string,x,y-1); 
+	judge(string,x,i,y-1,j-1);
+}
+void judgeno(char string[],int begin1,int begin2,int over1,int over2)
+{
+	if(string[over2+1]=='\n')
+	beginmove(string,begin1,begin2,over1,over2);
+	else
+	{
+	int i,j;
+	i=over2+1;
+	while(string[i]==' ')
+	{
+		i++;
+	}
+	j=i;
+	while(string[j]!=' '&&string[j]!='\n')
+	{
+		j++;
+	}
+	judge(string,begin1,i,over1,j-1);
+	}
+}
+void judgeyes(char string[],int begin1,int begin2,int over1,int over2)
+{
+	printf(" ");
+	display(string,begin2,over2);
+	for(int k=begin2;k<=over2;k++)
+	{
+		string[k]=' ';
+	}
+	if(string[over2+1]=='\n')
+	beginmove(string,begin1,begin2,over1,over2);
+	else
+	{
+	int i,j;
+	i=over2+1;
+	while(string[i]==' ')
+	{
+		i++;
+	}
+	j=i;
+	while(string[j]!=' '&&string[j]!='\n')
+	{
+		j++;
+	}
+	judge(string,begin1,i,over1,j-1);
+	}
+}
+void display(char string[],int begin,int over)
+{
+	for(int i=begin;i<=over;i++)
+	{
+		printf("%c",string[i]);
+	}
+}
+void judge(char string[],int begin1,int begin2,int over1,int over2)
+{
+	if(over1-begin1!=over2-begin2)
+	judgeno(string,begin1,begin2,over1,over2);
+	else
+	{
+	int i,j;
+	for(i=begin1;i<=over1;i++)
+	{
+		for(j=begin2;j<=over2;j++)
+		{
+			if(string[i]==string[j])
+			break;
+		}
+		if(j>over2)
+		{
+			judgeno(string,begin1,begin2,over1,over2);
+			break;
+		}
+	}
+	if(i>over1)
+	{
+		judgeyes(string,begin1,begin2,over1,over2);
+	}
+	}
+}
+int main()
+{
+	char string[100];
+	int i=-1,j;
+	do
+	{
+		i++;
+		scanf("%c",&string[i]);
+	}while(string[i]!='\n');
+	int begin1,begin2,over1,over2;
+	begin1=0;
+	over1=0;
+	while(string[over1]!=' ')
+	{
+		over1++;
+	}
+	over1--;
+	begin2=over1+1;
+	while(string[begin2]==' ')
+	{
+		begin2++;
+	}
+	over2=begin2;
+	while(string[over2]!=' '&&string[over2]!='\n')
+	{
+		over2++;
+	}
+	over2--;
+	display(string,begin1,over1);
+	judge(string,begin1,begin2,over1,over2);
+	
+}
