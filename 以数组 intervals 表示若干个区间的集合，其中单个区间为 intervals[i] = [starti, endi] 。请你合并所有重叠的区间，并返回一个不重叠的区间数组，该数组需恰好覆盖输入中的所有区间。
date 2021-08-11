@@ -1,0 +1,64 @@
+#include<stdio.h>
+void display(int string[],int flag)
+{
+	printf("(%d %d),",string[flag],string[flag+1]);
+}
+void merge(int string[],int flag,int over)
+{
+	if(string[flag]==-1&&string[flag+1]==-1&&flag<over-1)
+	{
+		merge(string,flag+2,over);
+		return ;
+	}
+	for(int i=flag+2;i<=over-1;i=i+2)
+	{
+		if(string[i]==-1&&string[i+1]==-1)
+		continue;
+		if(string[i]>=string[flag]&&string[flag+1]>=string[i]&&string[i+1]>string[flag+1])
+		{
+			string[flag+1]=string[i+1];
+			string[i]=-1;
+			string[i+1]=-1;
+			continue;
+		}
+		if(string[flag]<=string[i+1]&&string[flag+1]>=string[i+1]&&string[flag]>string[i])
+		{
+			string[flag]=string[i];
+			string[i]=-1;
+			string[i+1]=-1;
+			continue;
+		}
+		if(string[flag]<=string[i]&&string[flag+1]>=string[i+1])
+		{
+			string[i]=-1;
+			string[i+1]=-1;
+			continue; 
+		}
+		if(string[flag]>=string[i]&&string[flag+1]<=string[i+1])
+		{
+			string[flag]=string[i];
+			string[flag+1]=string[i+1];
+			string[i]=-1;
+			string[i+1]=-1;
+			continue; 
+		}
+	}
+	if(string[flag]!=-1&&string[flag+1]!=-1)
+	display(string,flag);
+	if(flag==over-1)
+	return ;
+	merge(string,flag+2,over);
+}
+int main()
+{
+	int string[100];
+	int i=0;
+	char a;
+	do
+	{
+		scanf("%d %d",&string[i],&string[i+1]);
+		i=i+2;
+		scanf("%c",&a);
+	}while(a!='\n');
+	merge(string,0,i-1);
+}
