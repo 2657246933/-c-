@@ -1,0 +1,128 @@
+#include<stdio.h>
+//flag1为行，flag2为列 
+void travel(int array[100][100],int flag1,int flag2,int* symbol,int row,int col)
+{
+	array[flag1][flag2]=1;
+	if(array[row][col]==1)
+	{
+		(*symbol)++;
+		array[row][col]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==1)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	 if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==1)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==1)
+	{
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==1)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==0)
+	{
+		travel(array,flag1,flag2+1,symbol,row,col);
+		array[flag1][flag2+1]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==0&&array[flag1][flag2+1]==1)
+	{
+		return ;
+	}
+	if(array[flag1-1][flag2]==1&&array[flag1+1][flag2]==0&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==1)
+	{
+		travel(array,flag1+1,flag2,symbol,row,col);
+		array[flag1+1][flag2]=0;
+		return ;
+	}
+	if(array[flag1-1][flag2]==0&&array[flag1+1][flag2]==1&&array[flag1][flag2-1]==1&&array[flag1][flag2+1]==1)
+	{
+		return ;
+	}
+}
+int main()
+{
+	int row,col;
+	int symbol=0;
+	scanf("%d %d",&row,&col);
+	int array[100][100];
+	for(int i=1;i<=row;i++)
+	{
+		for(int j=1;j<=col;j++)
+		{
+			array[i][j]=0;
+		}
+	}
+	for(int i=0;i<=col+1;i++)
+	{
+		array[0][i]=1;
+	}
+	for(int i=0;i<=row+1;i++)
+	{
+		array[i][0]=1;
+	}
+	for(int i=0;i<=col+1;i++)
+	{
+		array[row+1][i]=1;
+	}
+	for(int i=0;i<=row+1;i++)
+	{
+		array[i][col+1]=1;
+	}
+	travel(array,1,1,&symbol,row,col);
+	printf("%d",symbol);
+}
