@@ -1,0 +1,67 @@
+#include<stdio.h>
+typedef struct stack
+{
+	int string[100];
+	int* base;
+	int* top;
+};
+void initestack(stack* S)
+{
+	S->base=S->top=S->string;
+}
+void input(stack* S,int e)
+{
+	*(S->top)=e;
+	S->top++;
+}
+void output(stack* S)
+{
+	if(S->base==S->top)
+	return ;
+	S->top--;
+}
+void displaystack(stack* S)
+{
+	int* p=S->base;
+	printf("[");
+	while(p!=S->top)
+	{
+		printf("%d",*p);
+		p++;
+	}
+	printf("]");
+}
+void travel(int string[100],stack* S,int begin,int over,int number)
+{
+	for(int i=begin;i<=over;i++)
+	{
+		input(S,string[i]);
+		if(S->top-S->base==number)
+		{
+			displaystack(S);
+			output(S);
+			continue;
+		}
+		travel(string,S,i+1,over,number);
+	}
+	output(S);
+}
+int main()
+{
+	int string[100];
+	stack S;
+	initestack(&S);
+	int i=0;
+	char a;
+	do
+	{
+		scanf("%d",&string[i]);
+		i++;
+		scanf("%c",&a);
+	}while(a!='\n');
+	printf("[]");
+	for(int x=1;x<=i;x++)
+	{
+		travel(string,&S,0,i-1,x);
+	}
+}
