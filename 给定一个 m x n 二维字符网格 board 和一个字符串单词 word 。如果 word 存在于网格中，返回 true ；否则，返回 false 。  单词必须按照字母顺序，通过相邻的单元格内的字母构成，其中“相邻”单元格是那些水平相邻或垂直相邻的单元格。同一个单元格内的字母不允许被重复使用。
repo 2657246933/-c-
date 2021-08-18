@@ -1,0 +1,110 @@
+#include<stdio.h>
+#include<string.h>
+void initenumber(int number[100][100],int row,int col)
+{
+	for(int i=0;i<=col+1;i++)
+	{
+		number[0][i]=1;
+	}
+	for(int i=0;i<=col+1;i++)
+	{
+		number[row+1][i]=1;
+	}
+	for(int i=0;i<=row+1;i++)
+	{
+		number[i][0]=1;
+	}
+	for(int i=0;i<=row+1;i++)
+	{
+		number[i][col+1]=1;
+	}
+	for(int i=1;i<=row;i++)
+	{
+		for(int j=1;j<=col;j++)
+		{
+			number[i][j]=0;
+		}
+	}
+}
+void turnback(char array[100][100],int number[100][100],int row,int col)
+{
+	for(int i=1;i<=row;i++)
+	{
+		for(int j=1;j<=col;j++)
+		{
+			number[i][j]=0;
+		}
+	}
+}
+void travel(char array[100][100],int number[100][100],int row,int col,int flag1,int flag2,int* symbol,char string[100],int e)
+{
+	if(e==strlen(string))
+	{
+		*symbol=1;
+		return ;
+	}
+	if(array[flag1-1][flag2]==string[e]&&number[flag1-1][flag2]==0)
+	{
+		number[flag1-1][flag2]=1;
+		travel(array,number,row,col,flag1-1,flag2,symbol,string,e+1);
+	}
+	if(array[flag1+1][flag2]==string[e]&&number[flag1+1][flag2]==0)
+	{
+		number[flag1+1][flag2]=1;
+		travel(array,number,row,col,flag1+1,flag2,symbol,string,e+1);
+	}
+	if(array[flag1][flag2-1]==string[e]&&number[flag1][flag2-1]==0)
+	{
+		number[flag1][flag2-1]=1;
+		travel(array,number,row,col,flag1,flag2-1,symbol,string,e+1);
+	}
+	if(array[flag1][flag2+1]==string[e]&&number[flag1][flag2+1]==0)
+	{
+		number[flag1][flag2+1]=1;
+		travel(array,number,row,col,flag1,flag2+1,symbol,string,e+1);
+	}
+	number[flag1][flag2]=0;
+}
+int main()
+{
+	char array[100][100];
+	int number[100][100];
+	int row,col;
+	int i=1,j=1;
+	char a;
+	do
+	{
+		do
+		{
+			scanf("%c",&array[i][j]);
+			j++;
+			scanf("%c",&a);
+		}while(a!=' '&&a!='\n');
+		i++;
+		col=j-1;
+		j=1;
+	}while(a!='\n');
+	row=i-1;
+	char string[100];
+	int symbol=0;
+	scanf("%s",string);
+	initenumber(number,row,col);
+	for(int x=1;x<=row;x++)
+	{
+		for(int y=1;y<=col;y++)
+		{
+			if(array[x][y]==string[0])
+			{
+				travel(array,number,row,col,x,y,&symbol,string,1);
+			}
+		}
+	}
+	if(symbol==1)
+	{
+		printf("true");
+	}
+	else
+	{
+		printf("false");
+	}
+}
