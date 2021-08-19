@@ -1,0 +1,115 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Tree
+{
+	char string[4];
+	Tree* lchild;
+	Tree* rchild;
+};
+typedef struct stack
+{
+	Tree* string[100];
+	int front;
+	int rear;
+};
+void initestack(stack* S)
+{
+	S->front=0;
+	S->rear=0;
+}
+void inputstack(stack* S,Tree* e)
+{
+	S->string[S->rear]=e;
+	S->rear++;
+}
+void outputstack(stack* S)
+{
+	S->front++;
+}
+Tree* travel(stack* S,char string[4])
+{
+	if(S->front==S->rear)
+	{
+		scanf("%c",&string[0]);
+		if(string[0]=='\n')
+		return NULL;
+		Tree* T;
+		T=(Tree*)malloc(sizeof(Tree));
+		T->lchild=NULL;
+		T->rchild=NULL;
+		T->string[0]=string[0];
+		inputstack(S,T);
+		travel(S,string);
+		return T;
+	}
+	else
+	{
+		scanf("%c",&string[0]);
+		if(string[0]=='\n')
+		{
+			return NULL;
+		}
+		if(string[0]=='n')
+		{
+			for(int i=1;i<=3;i++)
+			scanf("%c",&string[i]); 
+			return NULL;
+		}
+		S->string[S->front]->lchild=(Tree*)malloc(sizeof(Tree));
+		S->string[S->front]->lchild->lchild=NULL;
+		S->string[S->front]->lchild->rchild=NULL;
+		S->string[S->front]->lchild->string[0]=string[0];
+		inputstack(S,S->string[S->front]->lchild);
+		scanf("%c",&string[0]);
+		if(string[0]=='\n')
+		{
+			return NULL;
+		}
+		if(string[0]=='n')
+		{
+			for(int i=1;i<=3;i++)
+			scanf("%c",&string[i]); 
+			return NULL;
+		}
+		S->string[S->front]->rchild=(Tree*)malloc(sizeof(Tree));
+		S->string[S->front]->rchild->lchild=NULL;
+		S->string[S->front]->rchild->rchild=NULL;
+		S->string[S->front]->rchild->string[0]=string[0];
+		inputstack(S,S->string[S->front]->rchild);
+		outputstack(S);
+		travel(S,string);
+		return NULL;
+	}
+}
+void travelback(Tree* T,char* flag,int* e)
+{
+	if(T==NULL)
+	{
+		return ;
+	}
+	travelback(T->lchild,flag,e);
+	if(T->string[0]<*flag)
+	{
+		*e=1;
+	}
+	else
+	{
+		*flag=T->string[0];
+	}
+	travelback(T->rchild,flag,e);
+}
+int main()
+{
+	char flag='0';
+	int e=0;
+	char string[4];
+	stack S;
+	Tree* T;
+	initestack(&S);
+	T=travel(&S,string);
+	travelback(T,&flag,&e);
+	if(e==1)
+	printf("false");
+	else
+	printf("true");
+}
